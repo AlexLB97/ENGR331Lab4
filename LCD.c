@@ -33,7 +33,16 @@
  * FUNCTION PROTOTYPES
  *******************************
  */
-static void LCD_putNibble(uint8_t nibble);
+// Delay Functions
+void tim6_delay(void);
+void delay(int ms);
+
+// LCD related functions
+void LCD_port_init(void);
+void LCD_init(void);
+void LCD_write(unsigned char data);
+void place_lcd_cursor(unsigned char lineno);
+// END Functions
 
 
 /*******************************
@@ -136,30 +145,22 @@ void LCD_init()
 
 	// STEP 3a-3d: Set 4-bit mode (takes a total of 4 steps)
 	LCD_send_cmd(0x33);
-	
-	delay(20);
-	
 	LCD_send_cmd(0x32);
-	delay(20);
 
 	// STEP 4: Set 2 line display -- treats 16 char as 2 lines
 	LCD_send_cmd(0x34);
-	delay(20);
 
 	// STEP 5: Set DISPLAY to OFF
 	LCD_send_cmd(0x04);
 
 	// STEP 6: CLEAR DISPLAY
 	LCD_send_cmd(0x01);
-	delay(20);
 
 	// STEP 7: SET ENTRY MODE - Auto increment; no scrolling
 	LCD_send_cmd(0x06);
-	delay(20);
 
 	// STEP 8: Set Display to ON with Cursor and Blink.
 	LCD_send_cmd(0x0F);
-	delay(20);
 }
 
 /*******************************
@@ -190,8 +191,7 @@ void place_lcd_cursor(uint8_t lineno){
 
 void LCD_write(uint8_t data)
 {
-	LCD_putNibble(data >> 4);
-	LCD_putNibble(data & 0x0F);
+
 
 }
 
@@ -207,12 +207,12 @@ static void LCD_putNibble(uint8_t nibble)
 	gpio_pin_set_level(GPIOD, DB5, (bool)(nibble & (1 << 1)));
 	gpio_pin_set_level(GPIOD, DB4, (bool)(nibble & (1 << 0)));
 	
-	delay(4);
+	delay(5);
 
 	// Set EN = LOW
 	gpio_pin_clear(GPIOD, EN);
-
-	delay(4);
+	
+	delay(5);
 }
 
 
@@ -224,9 +224,11 @@ void LCD_send_cmd(uint8_t cmd)
 
 	LCD_putNibble(cmd >> 4);
 	
-	LCD_putNibble(cmd & 0xF);
+	LCD_putNibble(cmd & 0x0F);
 	
 	gpio_pin_set(GPIOD, RS);
+	
+	delay(20);
 }
 
 

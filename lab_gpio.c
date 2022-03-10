@@ -123,5 +123,12 @@ void gpio_pin_toggle_output(GPIO_TypeDef *port, uint32_t pos)
 
 void gpio_pin_set_level(GPIO_TypeDef *port, uint32_t pin, uint8_t level)
 {
-	port->ODR |= (level << pin);
+	if (level == 1)
+	{
+		port->ODR |= (level << pin);
+	}
+	else
+	{
+		port->ODR &= ~(1 << pin);
+	}
 }
