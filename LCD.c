@@ -42,6 +42,8 @@ void LCD_port_init(void);
 void LCD_init(void);
 void LCD_write(unsigned char data);
 void place_lcd_cursor(unsigned char lineno);
+static void LCD_putNibble(uint8_t nibble);
+void LCD_clear_display();
 // END Functions
 
 
@@ -58,7 +60,7 @@ void tim6_delay(void){
 	RCC->APB1ENR|=RCC_APB1ENR_TIM6EN;
 	//TIM6 prescaler set at default to 0 for now
 	TIM6->PSC=0; // prescalar
-	TIM6->ARR = 21000;  //auto reload register 
+	TIM6->ARR = 16000;  //auto reload register 
 	TIM6->CNT=0;   //clear counter register
 	TIM6->CR1|=TIM_CR1_CEN;
 	//WHEN COUNTER IS DONE THE TIM6_SR REG UIF FLAG IS SET
@@ -77,7 +79,7 @@ void tim6_delay(void){
 void delay(int ms)
 {
 	int i;
-	for (i=(int)(ms/1.33); i>0; i--)
+	for (i=ms; i>0; i--)
 	{
 		tim6_delay();
 	}
@@ -144,11 +146,17 @@ void LCD_init()
 	// Set EN=HIGH; Send 4-bit instruction; Set EN=low; delay 20ms;
 
 	// STEP 3a-3d: Set 4-bit mode (takes a total of 4 steps)
-	LCD_send_cmd(0x33);
-	LCD_send_cmd(0x32);
+	LCD_putNibble(0x03);
+	delay(20);
+	LCD_putNibble(0x03);
+	delay(20);
+	LCD_putNibble(0x03);
+	delay(20);
+	LCD_putNibble(0x02);
+	delay(20);
 
 	// STEP 4: Set 2 line display -- treats 16 char as 2 lines
-	LCD_send_cmd(0x34);
+	LCD_send_cmd(0x24);
 
 	// STEP 5: Set DISPLAY to OFF
 	LCD_send_cmd(0x04);
@@ -160,7 +168,11 @@ void LCD_init()
 	LCD_send_cmd(0x06);
 
 	// STEP 8: Set Display to ON with Cursor and Blink.
-	LCD_send_cmd(0x0F);
+	LCD_send_cmd(0x0F)
+
+	LCD_write('H');
+	delay(5000);
+	LCD_clear_display();
 }
 
 /*******************************
@@ -179,6 +191,12 @@ void place_lcd_cursor(uint8_t lineno){
 }
 
 
+void LCD_clear_display(void)
+{
+	LCD_send_cmd(0x01);
+}
+
+
 
 /*******************************
  * LCD_write()
@@ -189,10 +207,10 @@ void place_lcd_cursor(uint8_t lineno){
  *******************************
  */
 
-void LCD_write(uint8_t data)
+void LCD_write(unsigned char data)
 {
-
-
+	LCD_putNibble(data >> 4);
+	LCD_putNibble(data & 0x0F);
 }
 
 static void LCD_putNibble(uint8_t nibble)
@@ -207,12 +225,12 @@ static void LCD_putNibble(uint8_t nibble)
 	gpio_pin_set_level(GPIOD, DB5, (bool)(nibble & (1 << 1)));
 	gpio_pin_set_level(GPIOD, DB4, (bool)(nibble & (1 << 0)));
 	
-	delay(5);
+	delay(4);
 
 	// Set EN = LOW
 	gpio_pin_clear(GPIOD, EN);
 	
-	delay(5);
+	delay(4);
 }
 
 
