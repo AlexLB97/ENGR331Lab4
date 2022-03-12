@@ -33,17 +33,8 @@
  * FUNCTION PROTOTYPES
  *******************************
  */
-// Delay Functions
-void tim6_delay(void);
-void delay(int ms);
 
-// LCD related functions
-void LCD_port_init(void);
-void LCD_init(void);
-void LCD_write(unsigned char data);
-void place_lcd_cursor(unsigned char lineno);
 static void LCD_putNibble(uint8_t nibble);
-void LCD_clear_display();
 // END Functions
 
 
@@ -168,11 +159,7 @@ void LCD_init()
 	LCD_send_cmd(0x06);
 
 	// STEP 8: Set Display to ON with Cursor and Blink.
-	LCD_send_cmd(0x0F)
-
-	LCD_write('H');
-	delay(5000);
-	LCD_clear_display();
+	LCD_send_cmd(0x0F);
 }
 
 /*******************************
@@ -186,7 +173,8 @@ void LCD_init()
  *******************************
  */
 
-void place_lcd_cursor(uint8_t lineno){
+void place_lcd_cursor(uint8_t lineno)
+{
 
 }
 
@@ -207,10 +195,40 @@ void LCD_clear_display(void)
  *******************************
  */
 
-void LCD_write(unsigned char data)
+void LCD_write_char(unsigned char data)
 {
 	LCD_putNibble(data >> 4);
 	LCD_putNibble(data & 0x0F);
+}
+
+void LCD_write_string(char *message, int delay_ms)
+{
+	char string_buffer[DISPLAY_WIDTH_CHARS + 1];
+	int i = 0;
+	
+	LCD_clear_display();
+	strncpy(string_buffer, message, 16);
+	string_buffer[DISPLAY_WIDTH_CHARS] = '\0';
+
+	if (delay_ms == 0)
+	{
+		// Turn off display if displaying all at once
+		LCD_send_cmd(0x08);
+	}
+	
+	while (string_buffer[i] != '\0' && i < 17)
+	{
+		LCD_write_char(string_buffer[i]);
+		i++;
+		// Delay before next character
+		delay(delay_ms);
+	}	
+	
+	if (delay_ms == 0)
+	{
+		// Turn display back on if it was turned off
+		LCD_send_cmd(0x0F);
+	}
 }
 
 static void LCD_putNibble(uint8_t nibble)

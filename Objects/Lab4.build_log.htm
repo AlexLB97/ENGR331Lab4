@@ -22,38 +22,13 @@ Dialog DLL:      TCM.DLL V1.53.0.0
  
 <h2>Project:</h2>
 C:\Users\alex_\Documents\ENGR331\ENGR331Labs\Lab4\Lab4.uvprojx
-Project File Date:  03/10/2022
+Project File Date:  03/12/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.16', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Rebuild target 'Target 1'
-main.c(1): warning: In file included from...
-./LCD.h(25): warning: no newline at end of file [-Wnewline-eof]
-#endif // _LCD_H_
-                 ^
-main.c(33): warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-main.c(32): warning: 'return' will never be executed [-Wunreachable-code-return]
-    return 0;
-           ^
-3 warnings generated.
-compiling main.c...
 compiling system_stm32f4xx.c...
 assembling startup_stm32f407xx.s...
-LCD.c(9): warning: In file included from...
-./LCD.h(25): warning: no newline at end of file [-Wnewline-eof]
-#endif // _LCD_H_
-                 ^
-LCD.c(15): warning: In file included from...
-./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
-#endif // _LAB_GPIO_H
-                     ^
-LCD.c(186): warning: unused parameter 'lineno' [-Wunused-parameter]
-void place_lcd_cursor(uint8_t lineno){
-                              ^
-3 warnings generated.
-compiling LCD.c...
 lab_gpio.c(8): warning: In file included from...
 ./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
 #endif // _LAB_GPIO_H
@@ -66,8 +41,34 @@ lab_gpio.c(134): warning: no newline at end of file [-Wnewline-eof]
  ^
 3 warnings generated.
 compiling lab_gpio.c...
+LCD.c(9): warning: In file included from...
+./LCD.h(29): warning: no newline at end of file [-Wnewline-eof]
+#endif // _LCD_H_
+                 ^
+LCD.c(15): warning: In file included from...
+./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
+#endif // _LAB_GPIO_H
+                     ^
+LCD.c(176): warning: unused parameter 'lineno' [-Wunused-parameter]
+void place_lcd_cursor(uint8_t lineno){
+                              ^
+3 warnings generated.
+compiling LCD.c...
+main.c(2): warning: In file included from...
+./LCD.h(29): warning: no newline at end of file [-Wnewline-eof]
+#endif // _LCD_H_
+                 ^
+main.c(3): warning: In file included from...
+./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
+#endif // _LAB_GPIO_H
+                     ^
+main.c(220): warning: no newline at end of file [-Wnewline-eof]
+}
+ ^
+3 warnings generated.
+compiling main.c...
 linking...
-Program Size: Code=1012 RO-data=408 RW-data=0 ZI-data=1632  
+Program Size: Code=9104 RO-data=1004 RW-data=8 ZI-data=1640  
 ".\Objects\Lab4.axf" - 0 Error(s), 9 Warning(s).
 
 <h2>Software Packages used:</h2>
@@ -94,10 +95,10 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.5.0
 
    * Component: Keil::Device:Startup:2.6.3
+      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f407xx.s
       Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
       Source file:   MDK\Device\Source\ARM\STM32F40xxx_41xxx_OPT.s
       Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f407xx.s
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
 Build Time Elapsed:  00:00:01
 </pre>
