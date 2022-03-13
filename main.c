@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define DEBOUNCE_ITERS 20
 #define COUNT_INCREMENT_TICKS 100000
@@ -12,24 +13,24 @@
 #define UPPERCASE_LOWERCASE_OFFSET 0x20
 
 typedef enum {
-  DISPLAY_OFF = 0,
-  DISPLAY_AT_ONCE,
-  DISPLAY_REVERSE,
-  DISPLAY_INCREMENTAL,
-  DISPLAY_CAP_VOWELS,
-  DISPLAY_DECIMAL_NUMBER
+    DISPLAY_OFF = 0,
+    DISPLAY_AT_ONCE,
+    DISPLAY_REVERSE,
+    DISPLAY_INCREMENTAL,
+    DISPLAY_CAP_VOWELS,
+    DISPLAY_DECIMAL_NUMBER
 } LCD_state_t;
 
 static void reverse_string(char *str);
 static void handle_state_transition(LCD_state_t state);
 static void capitalize_vowels(char *str);
 static bool is_lower_case_vowel(char letter);
-static void handle_state_actions(LCD_state_t state, int timer_ticks);
+static void handle_state_actions(LCD_state_t state);
 
-static char *message = "Hello engr331 this is a long message!";
+static char *short_message = "Hello engr331!";
+static char *long_message  = "Hello engr331 this is a long message!";
 static int count = 0;
 static int count_changed = 1;
-static int incremental_char_pos = 0;
 
 static bool is_lower_case_vowel(char letter)
 {
@@ -61,7 +62,7 @@ static void capitalize_vowels(char str[])
 
 static void reverse_string(char str[])
 {
-  int len = (int)strlen(str);
+    int len = (int)strlen(str);
     char temp;
     
     for (int i = 0; i < len/2; i++)
@@ -72,39 +73,17 @@ static void reverse_string(char str[])
     }
 }
 
-static void handle_state_actions(LCD_state_t state, int timer_ticks)
+static void handle_state_actions(LCD_state_t state)
 {
-    switch(state)
+    if (state == DISPLAY_DECIMAL_NUMBER)
     {
-        case DISPLAY_DECIMAL_NUMBER:
+        if (count_changed)
         {
-            if (count_changed)
-            {
-                handle_state_transition(DISPLAY_DECIMAL_NUMBER);
-                count_changed = 0;
-            }
-						break;
+            handle_state_transition(DISPLAY_DECIMAL_NUMBER);
+            count_changed = 0;
         }
-
-        case DISPLAY_INCREMENTAL:
-        {   
-            int len = (int)strlen(message);
-            if (timer_ticks % INCREMENTAL_DELAY_TICKS == 0)
-            {   
-                if (incremental_char_pos == 0)
-                {
-                    LCD_clear_display();
-                    LCD_place_cursor(15);
-                }
-                LCD_write_char(message[incremental_char_pos]);
-                incremental_char_pos = (incremental_char_pos + 1) % len; 
-            }
-						break;
-        }
-
-        default:
-            break;
     }
+
 }
 
 static void handle_state_transition(LCD_state_t state)
@@ -113,20 +92,19 @@ static void handle_state_transition(LCD_state_t state)
     {
         case DISPLAY_OFF:
         {
-            LCD_clear_display();
             break;
         }
 
         case DISPLAY_AT_ONCE:
         {
-            LCD_write_string(message, OFF_WHILE_WRITING);
+            LCD_write_string(short_message, OFF_WHILE_WRITING);
             break;
         }
 
         case DISPLAY_REVERSE:
         {
             char buffer[DISPLAY_WIDTH_CHARS + 1];
-            strncpy(buffer, message, DISPLAY_WIDTH_CHARS);
+            strncpy(buffer, short_message, DISPLAY_WIDTH_CHARS);
             reverse_string(buffer);
             LCD_write_string(buffer, OFF_WHILE_WRITING);
             break;
@@ -134,17 +112,14 @@ static void handle_state_transition(LCD_state_t state)
         
         case DISPLAY_INCREMENTAL:
         {
-            // Ticker mode, so put cursor on right side of the screen
-            LCD_place_cursor(15);
-            // Change modes to shift left
-            LCD_send_cmd(LCD_CMD_SET_ENTRY_MODE | ENTRY_MODE_CURSOR_DIRECTION_RIGHT | ENTRY_MODE_SHIFT_ENABLE);
+            LCD_write_string(long_message, OFF_WHILE_WRITING);
             break;
         }
 
         case DISPLAY_CAP_VOWELS:
         {
             char buffer[DISPLAY_WIDTH_CHARS + 1] = {0};
-            strncpy(buffer, message, DISPLAY_WIDTH_CHARS);
+            strncpy(buffer, short_message, DISPLAY_WIDTH_CHARS);
             capitalize_vowels(buffer);
             LCD_write_string(buffer, OFF_WHILE_WRITING);
             break;
@@ -192,30 +167,28 @@ int main(void)
   LCD_clear_display();
 
 
-  while(1)
-  {
-    timer_ticks++;
-
-    if (timer_ticks % COUNT_INCREMENT_TICKS == 0)
+    while(1)
     {
-      count++;
-      count_changed = 1;
-    }
-    if (gpio_pin_get_level(GPIOA, USER_BTN) == 1)
-    {
+        timer_ticks++;
 
-      button_high_count++;
-      if (button_high_count == DEBOUNCE_ITERS)
-      {
-        button_clicked = 1;
-      }
-    }
-    else
-    {
-      button_high_count = 0;
-    }
+        if (timer_ticks % COUNT_INCREMENT_TICKS == 0)
+        {
+            count++;
+            count_changed = 1;
+        }
+        if (gpio_pin_get_level(GPIOA, USER_BTN) == 1)
+        {
 
-  
+            button_high_count++;
+            if (button_high_count == DEBOUNCE_ITERS)
+            {
+                button_clicked = 1;
+            }
+        }
+        else
+        {
+            button_high_count = 0;
+        }
 
         if (button_clicked)
         {
@@ -234,14 +207,7 @@ int main(void)
                     break;
 
                 case DISPLAY_INCREMENTAL:
-                    application_state = DISPLAY_CAP_VOWELS;
-                
-                    // Clean up for next state
-                    // Set entry mode and place cursor back at left side
-                    LCD_send_cmd(LCD_CMD_SET_ENTRY_MODE | ENTRY_MODE_CURSOR_DIRECTION_RIGHT);
-                    LCD_send_cmd(LCD_CMD_RETURN_HOME);
-                    incremental_char_pos = 0;
-                    
+                    application_state = DISPLAY_CAP_VOWELS;                    
                     break;
 
                 case DISPLAY_CAP_VOWELS:
@@ -255,6 +221,6 @@ int main(void)
             handle_state_transition(application_state);
             button_clicked = 0;
         }
-        handle_state_actions(application_state, timer_ticks);
+        handle_state_actions(application_state);
     }
 }

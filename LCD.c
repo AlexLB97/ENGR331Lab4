@@ -28,6 +28,7 @@
 #define DB4 0
 
 #define INIT_DELAY_MS 100
+#define TICKER_RATE_MS 400
 
 
 /*******************************
@@ -43,8 +44,8 @@ static void LCD_putNibble(uint8_t nibble);
  * tim6_delay(void)
  * Inputs: NONE
  * Outputs: NONE
- * Based on PSC=0 and ARR=21000; 
- * we get delay of approximately 1.33ms
+ * Based on PSC=0 and ARR=16000; 
+ * we get delay of approximately 1ms
  *******************************
  */
 void tim6_delay(void){
@@ -209,26 +210,23 @@ void LCD_write_char(unsigned char data)
 	LCD_putNibble(data & 0x0F);
 }
 
-/**
-* NOTE: It is up to the caller to clear the LCD before writing to the screen
-* if desired.
-*/
 void LCD_write_string(char *message, write_type_t write_type)
 {
-	char string_buffer[DISPLAY_WIDTH_CHARS + 1];
+	char string_buffer[LINE_WIDTH_CHARS + 1];
+    int len = (int)strlen(message);
 	int i = 0;
 	
-	LCD_send_cmd(0x02);
-	strncpy(string_buffer, message, 16);
-	string_buffer[DISPLAY_WIDTH_CHARS] = '\0';
+	LCD_send_cmd(LCD_CMD_CLEAR_DISPLAY);
+	strncpy(string_buffer, message, LINE_WIDTH_CHARS);
+	string_buffer[LINE_WIDTH_CHARS] = '\0';
 
 	if (write_type == OFF_WHILE_WRITING)
 	{
 		// Turn off display if displaying all at once
-		LCD_send_cmd(0x08);
+		LCD_send_cmd(LCD_CMD_DISPLAY_ON_OFF);
 	}
 	
-	while (string_buffer[i] != '\0' && i < 17)
+	while (string_buffer[i] != '\0' && i <= LINE_WIDTH_CHARS)
 	{
 		LCD_write_char(string_buffer[i]);
 		i++;
@@ -239,9 +237,26 @@ void LCD_write_string(char *message, write_type_t write_type)
 	if (write_type == OFF_WHILE_WRITING)
 	{
 		// Turn display back on if it was turned off
-		LCD_send_cmd(0x0F);
+		LCD_send_cmd(LCD_CMD_DISPLAY_ON_OFF | DISPLAY_MODE_ON | DISPLAY_MODE_CURSOR | DISPLAY_MODE_BLINK);
 	}
 
+	// If the string is longer than the display is wide, show ticker style
+	if (len > DISPLAY_WIDTH_CHARS)
+	{
+		// Wait one second before scrolling starts
+        delay(1000);
+		// Set the number of shifts to display whole message
+		int max_shifts = (len - DISPLAY_WIDTH_CHARS) < (LINE_WIDTH_CHARS - DISPLAY_WIDTH_CHARS) ? (len - DISPLAY_WIDTH_CHARS) : (LINE_WIDTH_CHARS - DISPLAY_WIDTH_CHARS);
+		int shift_count = 0;
+
+		// Shift ticker style
+		while (shift_count < max_shifts)
+		{
+			LCD_send_cmd(LCD_CMD_CURSOR_DISPLAY_SHIFT | SHIFT_OPERATION);	
+			shift_count++;
+			delay(TICKER_RATE_MS);
+		}
+	}
 }
 
 static void LCD_putNibble(uint8_t nibble)
@@ -271,8 +286,10 @@ void LCD_send_cmd(uint8_t cmd)
 	// STEP 2: Set RS pin LOW to send instructions
 	gpio_pin_clear(GPIOD, RS);
 
+	// Send upper 4 bits
 	LCD_putNibble(cmd >> 4);
 	
+	// Send lower four bits
 	LCD_putNibble(cmd & 0x0F);
 	
 	gpio_pin_set(GPIOD, RS);

@@ -27,26 +27,8 @@ Project File Date:  03/12/2022
 <h2>Output:</h2>
 *** Using Compiler 'V6.16', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Rebuild target 'Target 1'
-assembling startup_stm32f407xx.s...
-compiling system_stm32f4xx.c...
-main.c(2): warning: In file included from...
-./LCD.h(76): warning: no newline at end of file [-Wnewline-eof]
-#endif // _LCD_H_
-                 ^
-main.c(3): warning: In file included from...
-./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
-#endif // _LAB_GPIO_H
-                     ^
-main.c(77): warning: 4 enumeration values not explicitly handled in switch: 'DISPLAY_OFF', 'DISPLAY_AT_ONCE', 'DISPLAY_REVERSE'... [-Wswitch-enum]
-    switch(state)
-           ^
-main.c(260): warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-4 warnings generated.
-compiling main.c...
 LCD.c(9): warning: In file included from...
-./LCD.h(76): warning: no newline at end of file [-Wnewline-eof]
+./LCD.h(77): warning: no newline at end of file [-Wnewline-eof]
 #endif // _LCD_H_
                  ^
 LCD.c(15): warning: In file included from...
@@ -55,6 +37,8 @@ LCD.c(15): warning: In file included from...
                      ^
 2 warnings generated.
 compiling LCD.c...
+compiling system_stm32f4xx.c...
+assembling startup_stm32f407xx.s...
 lab_gpio.c(8): warning: In file included from...
 ./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
 #endif // _LAB_GPIO_H
@@ -67,9 +51,22 @@ lab_gpio.c(134): warning: no newline at end of file [-Wnewline-eof]
  ^
 3 warnings generated.
 compiling lab_gpio.c...
+main.c(2): warning: In file included from...
+./LCD.h(77): warning: no newline at end of file [-Wnewline-eof]
+#endif // _LCD_H_
+                 ^
+main.c(3): warning: In file included from...
+./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
+#endif // _LAB_GPIO_H
+                     ^
+main.c(226): warning: no newline at end of file [-Wnewline-eof]
+}
+ ^
+3 warnings generated.
+compiling main.c...
 linking...
-Program Size: Code=9336 RO-data=1024 RW-data=8 ZI-data=1640  
-".\Objects\Lab4.axf" - 0 Error(s), 9 Warning(s).
+Program Size: Code=9200 RO-data=1040 RW-data=12 ZI-data=1640  
+".\Objects\Lab4.axf" - 0 Error(s), 8 Warning(s).
 
 <h2>Software Packages used:</h2>
 

@@ -6,6 +6,7 @@
 #include "stm32f4xx.h"
 
 #define DISPLAY_WIDTH_CHARS 16
+#define LINE_WIDTH_CHARS 40
 
 typedef enum {
     ON_WHILE_WRITING = 0,
