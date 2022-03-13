@@ -16,11 +16,6 @@
 #include "stm32f4xx.h" 
 
 /*******************************
- * LCD Commands and Flags
- *******************************
- */
-
-/*******************************
  * LCD pins connections to PORTD
  *******************************
  */
@@ -153,19 +148,19 @@ void LCD_init()
 	delay(20);
 
 	// STEP 4: Set 2 line display -- treats 16 char as 2 lines
-	LCD_send_cmd(0x24);
-
+	LCD_send_cmd(LCD_CMD_FUNCTION_SET | TWO_LINE);
+	
 	// STEP 5: Set DISPLAY to OFF
-	LCD_send_cmd(0x04);
+	LCD_send_cmd(LCD_CMD_DISPLAY_ON_OFF);
 
 	// STEP 6: CLEAR DISPLAY
-	LCD_send_cmd(0x01);
+	LCD_send_cmd(LCD_CMD_CLEAR_DISPLAY);
 
 	// STEP 7: SET ENTRY MODE - Auto increment; no scrolling
-	LCD_send_cmd(0x06);
+	LCD_send_cmd(LCD_CMD_SET_ENTRY_MODE | ENTRY_MODE_CURSOR_DIRECTION_RIGHT);
 
 	// STEP 8: Set Display to ON with Cursor and Blink.
-	LCD_send_cmd(0x0F);
+	LCD_send_cmd(LCD_CMD_DISPLAY_ON_OFF | DISPLAY_MODE_ON | DISPLAY_MODE_CURSOR | DISPLAY_MODE_BLINK);
 }
 
 /*******************************
@@ -179,15 +174,22 @@ void LCD_init()
  *******************************
  */
 
-void place_lcd_cursor(uint8_t )
+void LCD_place_cursor(uint8_t address)
 {
-
+    int cur_address = 0x00;
+    LCD_send_cmd(LCD_CMD_RETURN_HOME);
+    
+    while (cur_address < address)
+    {
+        LCD_send_cmd(LCD_CMD_CURSOR_DISPLAY_SHIFT | MOVE_RIGHT);
+        cur_address++;
+    }
 }
 
 
 void LCD_clear_display(void)
 {
-	LCD_send_cmd(0x01);
+	LCD_send_cmd(LCD_CMD_CLEAR_DISPLAY);
 }
 
 
@@ -207,17 +209,24 @@ void LCD_write_char(unsigned char data)
 	LCD_putNibble(data & 0x0F);
 }
 
-void LCD_write_string(char *message)
+/**
+* NOTE: It is up to the caller to clear the LCD before writing to the screen
+* if desired.
+*/
+void LCD_write_string(char *message, write_type_t write_type)
 {
 	char string_buffer[DISPLAY_WIDTH_CHARS + 1];
 	int i = 0;
 	
-	LCD_clear_display();
+	LCD_send_cmd(0x02);
 	strncpy(string_buffer, message, 16);
 	string_buffer[DISPLAY_WIDTH_CHARS] = '\0';
 
-	// Turn off display if displaying all at once
-	LCD_send_cmd(0x08);
+	if (write_type == OFF_WHILE_WRITING)
+	{
+		// Turn off display if displaying all at once
+		LCD_send_cmd(0x08);
+	}
 	
 	while (string_buffer[i] != '\0' && i < 17)
 	{
@@ -227,8 +236,11 @@ void LCD_write_string(char *message)
 	}	
 	
 
-	// Turn display back on if it was turned off
-	LCD_send_cmd(0x0F);
+	if (write_type == OFF_WHILE_WRITING)
+	{
+		// Turn display back on if it was turned off
+		LCD_send_cmd(0x0F);
+	}
 
 }
 

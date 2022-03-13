@@ -26,7 +26,7 @@ static void capitalize_vowels(char *str);
 static bool is_lower_case_vowel(char letter);
 static void handle_state_actions(LCD_state_t state, int timer_ticks);
 
-static char *message = "Hello engr331!";
+static char *message = "Hello engr331 this is a long message!";
 static int count = 0;
 static int count_changed = 1;
 static int incremental_char_pos = 0;
@@ -94,6 +94,7 @@ static void handle_state_actions(LCD_state_t state, int timer_ticks)
                 if (incremental_char_pos == 0)
                 {
                     LCD_clear_display();
+                    LCD_place_cursor(15);
                 }
                 LCD_write_char(message[incremental_char_pos]);
                 incremental_char_pos = (incremental_char_pos + 1) % len; 
@@ -118,7 +119,7 @@ static void handle_state_transition(LCD_state_t state)
 
         case DISPLAY_AT_ONCE:
         {
-            LCD_write_string(message);
+            LCD_write_string(message, OFF_WHILE_WRITING);
             break;
         }
 
@@ -127,7 +128,16 @@ static void handle_state_transition(LCD_state_t state)
             char buffer[DISPLAY_WIDTH_CHARS + 1];
             strncpy(buffer, message, DISPLAY_WIDTH_CHARS);
             reverse_string(buffer);
-            LCD_write_string(buffer);
+            LCD_write_string(buffer, OFF_WHILE_WRITING);
+            break;
+        }
+        
+        case DISPLAY_INCREMENTAL:
+        {
+            // Ticker mode, so put cursor on right side of the screen
+            LCD_place_cursor(15);
+            // Change modes to shift left
+            LCD_send_cmd(LCD_CMD_SET_ENTRY_MODE | ENTRY_MODE_CURSOR_DIRECTION_RIGHT | ENTRY_MODE_SHIFT_ENABLE);
             break;
         }
 
@@ -136,7 +146,7 @@ static void handle_state_transition(LCD_state_t state)
             char buffer[DISPLAY_WIDTH_CHARS + 1] = {0};
             strncpy(buffer, message, DISPLAY_WIDTH_CHARS);
             capitalize_vowels(buffer);
-            LCD_write_string(buffer);
+            LCD_write_string(buffer, OFF_WHILE_WRITING);
             break;
         }
 
@@ -144,12 +154,9 @@ static void handle_state_transition(LCD_state_t state)
         {
             char buffer[DISPLAY_WIDTH_CHARS + 1];
             sprintf(buffer, "Count: %d", count);
-            LCD_write_string(buffer);
+            LCD_write_string(buffer, ON_WHILE_WRITING);
             break;
         }
-
-        default:
-            break;  
     }   
 }
 
@@ -212,6 +219,7 @@ int main(void)
 
         if (button_clicked)
         {
+            LCD_clear_display();
             switch(application_state)
             {
                 case DISPLAY_OFF:
@@ -227,7 +235,13 @@ int main(void)
 
                 case DISPLAY_INCREMENTAL:
                     application_state = DISPLAY_CAP_VOWELS;
-										incremental_char_pos = 0;
+                
+                    // Clean up for next state
+                    // Set entry mode and place cursor back at left side
+                    LCD_send_cmd(LCD_CMD_SET_ENTRY_MODE | ENTRY_MODE_CURSOR_DIRECTION_RIGHT);
+                    LCD_send_cmd(LCD_CMD_RETURN_HOME);
+                    incremental_char_pos = 0;
+                    
                     break;
 
                 case DISPLAY_CAP_VOWELS:
