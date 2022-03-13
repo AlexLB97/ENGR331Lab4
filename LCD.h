@@ -21,7 +21,7 @@ void LCD_init(void);
 void place_lcd_cursor(uint8_t lineno);
 void LCD_send_cmd(uint8_t cmd);
 void LCD_write_char(unsigned char data);
-void LCD_write_string(char *message, int delay_ms);
+void LCD_write_string(char *message);
 void LCD_clear_display(void);
 // END Functions
 

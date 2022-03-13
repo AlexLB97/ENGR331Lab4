@@ -27,8 +27,8 @@ Project File Date:  03/12/2022
 <h2>Output:</h2>
 *** Using Compiler 'V6.16', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Rebuild target 'Target 1'
-compiling system_stm32f4xx.c...
 assembling startup_stm32f407xx.s...
+compiling system_stm32f4xx.c...
 lab_gpio.c(8): warning: In file included from...
 ./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
 #endif // _LAB_GPIO_H
@@ -49,8 +49,8 @@ LCD.c(15): warning: In file included from...
 ./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
 #endif // _LAB_GPIO_H
                      ^
-LCD.c(176): warning: unused parameter 'lineno' [-Wunused-parameter]
-void place_lcd_cursor(uint8_t lineno){
+LCD.c(182): warning: omitting the parameter name in a function definition is a C2x extension [-Wc2x-extensions]
+void place_lcd_cursor(uint8_t )
                               ^
 3 warnings generated.
 compiling LCD.c...
@@ -62,14 +62,20 @@ main.c(3): warning: In file included from...
 ./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
 #endif // _LAB_GPIO_H
                      ^
-main.c(220): warning: no newline at end of file [-Wnewline-eof]
+main.c(77): warning: 4 enumeration values not explicitly handled in switch: 'DISPLAY_OFF', 'DISPLAY_AT_ONCE', 'DISPLAY_REVERSE'... [-Wswitch-enum]
+    switch(state)
+           ^
+main.c(111): warning: enumeration value 'DISPLAY_INCREMENTAL' not explicitly handled in switch [-Wswitch-enum]
+    switch (state)
+            ^
+main.c(246): warning: no newline at end of file [-Wnewline-eof]
 }
  ^
-3 warnings generated.
+5 warnings generated.
 compiling main.c...
 linking...
-Program Size: Code=9104 RO-data=1004 RW-data=8 ZI-data=1640  
-".\Objects\Lab4.axf" - 0 Error(s), 9 Warning(s).
+Program Size: Code=9212 RO-data=1004 RW-data=8 ZI-data=1640  
+".\Objects\Lab4.axf" - 0 Error(s), 11 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -95,12 +101,12 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.5.0
 
    * Component: Keil::Device:Startup:2.6.3
-      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f407xx.s
       Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
-      Source file:   MDK\Device\Source\ARM\STM32F40xxx_41xxx_OPT.s
       Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
+      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f407xx.s
+      Source file:   MDK\Device\Source\ARM\STM32F40xxx_41xxx_OPT.s
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>

@@ -16,6 +16,11 @@
 #include "stm32f4xx.h" 
 
 /*******************************
+ * LCD Commands and Flags
+ *******************************
+ */
+
+/*******************************
  * LCD pins connections to PORTD
  *******************************
  */
@@ -28,6 +33,7 @@
 #define DB4 0
 
 #define INIT_DELAY_MS 100
+
 
 /*******************************
  * FUNCTION PROTOTYPES
@@ -173,7 +179,7 @@ void LCD_init()
  *******************************
  */
 
-void place_lcd_cursor(uint8_t lineno)
+void place_lcd_cursor(uint8_t )
 {
 
 }
@@ -201,7 +207,7 @@ void LCD_write_char(unsigned char data)
 	LCD_putNibble(data & 0x0F);
 }
 
-void LCD_write_string(char *message, int delay_ms)
+void LCD_write_string(char *message)
 {
 	char string_buffer[DISPLAY_WIDTH_CHARS + 1];
 	int i = 0;
@@ -210,25 +216,20 @@ void LCD_write_string(char *message, int delay_ms)
 	strncpy(string_buffer, message, 16);
 	string_buffer[DISPLAY_WIDTH_CHARS] = '\0';
 
-	if (delay_ms == 0)
-	{
-		// Turn off display if displaying all at once
-		LCD_send_cmd(0x08);
-	}
+	// Turn off display if displaying all at once
+	LCD_send_cmd(0x08);
 	
 	while (string_buffer[i] != '\0' && i < 17)
 	{
 		LCD_write_char(string_buffer[i]);
 		i++;
 		// Delay before next character
-		delay(delay_ms);
 	}	
 	
-	if (delay_ms == 0)
-	{
-		// Turn display back on if it was turned off
-		LCD_send_cmd(0x0F);
-	}
+
+	// Turn display back on if it was turned off
+	LCD_send_cmd(0x0F);
+
 }
 
 static void LCD_putNibble(uint8_t nibble)

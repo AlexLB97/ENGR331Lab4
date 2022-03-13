@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Lab4.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Lab4.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6160001: Last Updated: Sat Mar 12 11:12:13 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6160001: Last Updated: Sun Mar 13 12:35:52 2022
 <BR><P>
 <H3>Maximum Stack Usage =        324 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -412,7 +412,7 @@ Global Symbols
 <P><STRONG><a name="[fc]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[92]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 272 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 280 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; handle_state_actions &rArr; handle_state_transition &rArr; sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
@@ -766,6 +766,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = strlen
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reverse_string
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_actions
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;capitalize_vowels
 </UL>
 
@@ -1153,6 +1154,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_transition
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_actions
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_write_string
 </UL>
 
@@ -1196,15 +1198,15 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_putNibble
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_write_string
+<BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_actions
+<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_write_string
 </UL>
 
-<P><STRONG><a name="[c9]"></a>LCD_write_string</STRONG> (Thumb, 134 bytes, Stack size 48 bytes, lcd.o(.text.LCD_write_string))
+<P><STRONG><a name="[c9]"></a>LCD_write_string</STRONG> (Thumb, 110 bytes, Stack size 48 bytes, lcd.o(.text.LCD_write_string))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120 + Unknown Stack Size
 <LI>Call Chain = LCD_write_string &rArr; LCD_clear_display &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncpy
-<LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_write_char
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_send_cmd
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_clear_display
@@ -1220,8 +1222,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tim6_delay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_write_string
-<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_send_cmd
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_send_cmd
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_init
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_putNibble
 </UL>
@@ -1280,8 +1281,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;user_button_init
 </UL>
 
-<P><STRONG><a name="[93]"></a>main</STRONG> (Thumb, 254 bytes, Stack size 32 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 272 + Unknown Stack Size
+<P><STRONG><a name="[93]"></a>main</STRONG> (Thumb, 270 bytes, Stack size 32 bytes, main.o(.text.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 280 + Unknown Stack Size
 <LI>Call Chain = main &rArr; handle_state_actions &rArr; handle_state_transition &rArr; sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_transition
@@ -1443,17 +1444,20 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_transition
 </UL>
 
-<P><STRONG><a name="[ce]"></a>handle_state_actions</STRONG> (Thumb, 56 bytes, Stack size 16 bytes, main.o(.text.handle_state_actions))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240 + Unknown Stack Size
+<P><STRONG><a name="[ce]"></a>handle_state_actions</STRONG> (Thumb, 200 bytes, Stack size 32 bytes, main.o(.text.handle_state_actions))
+<BR><BR>[Stack]<UL><LI>Max Depth = 248 + Unknown Stack Size
 <LI>Call Chain = handle_state_actions &rArr; handle_state_transition &rArr; sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_transition
+<BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
+<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_transition
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_write_char
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_clear_display
 </UL>
 <BR>[Called By]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[cf]"></a>handle_state_transition</STRONG> (Thumb, 206 bytes, Stack size 88 bytes, main.o(.text.handle_state_transition))
-<BR><BR>[Stack]<UL><LI>Max Depth = 224 + Unknown Stack Size
+<P><STRONG><a name="[cf]"></a>handle_state_transition</STRONG> (Thumb, 180 bytes, Stack size 80 bytes, main.o(.text.handle_state_transition))
+<BR><BR>[Stack]<UL><LI>Max Depth = 216 + Unknown Stack Size
 <LI>Call Chain = handle_state_transition &rArr; sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncpy
