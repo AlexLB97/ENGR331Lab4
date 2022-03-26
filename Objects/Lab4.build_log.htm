@@ -27,6 +27,7 @@ Project File Date:  03/12/2022
 <h2>Output:</h2>
 *** Using Compiler 'V6.16', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Rebuild target 'Target 1'
+compiling system_stm32f4xx.c...
 LCD.c(9): warning: In file included from...
 ./LCD.h(77): warning: no newline at end of file [-Wnewline-eof]
 #endif // _LCD_H_
@@ -37,20 +38,7 @@ LCD.c(15): warning: In file included from...
                      ^
 2 warnings generated.
 compiling LCD.c...
-compiling system_stm32f4xx.c...
 assembling startup_stm32f407xx.s...
-lab_gpio.c(8): warning: In file included from...
-./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
-#endif // _LAB_GPIO_H
-                     ^
-lab_gpio.c(128): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                port->ODR |= (level << pin);
-                          ~~  ~~~~~~^~~~~~
-lab_gpio.c(134): warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-3 warnings generated.
-compiling lab_gpio.c...
 main.c(2): warning: In file included from...
 ./LCD.h(77): warning: no newline at end of file [-Wnewline-eof]
 #endif // _LCD_H_
@@ -64,8 +52,20 @@ main.c(226): warning: no newline at end of file [-Wnewline-eof]
  ^
 3 warnings generated.
 compiling main.c...
+lab_gpio.c(8): warning: In file included from...
+./lab_gpio.h(27): warning: no newline at end of file [-Wnewline-eof]
+#endif // _LAB_GPIO_H
+                     ^
+lab_gpio.c(128): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+                port->ODR |= (level << pin);
+                          ~~  ~~~~~~^~~~~~
+lab_gpio.c(134): warning: no newline at end of file [-Wnewline-eof]
+}
+ ^
+3 warnings generated.
+compiling lab_gpio.c...
 linking...
-Program Size: Code=9200 RO-data=1040 RW-data=12 ZI-data=1640  
+Program Size: Code=9228 RO-data=1040 RW-data=12 ZI-data=1640  
 ".\Objects\Lab4.axf" - 0 Error(s), 8 Warning(s).
 
 <h2>Software Packages used:</h2>
@@ -92,12 +92,12 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.5.0
 
    * Component: Keil::Device:Startup:2.6.3
-      Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
-      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f407xx.s
       Source file:   MDK\Device\Source\ARM\STM32F40xxx_41xxx_OPT.s
+      Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
+      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>

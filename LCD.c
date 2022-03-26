@@ -21,6 +21,7 @@
  */
 #define RS 7
 #define EN 6 
+#define RW 4
 
 #define DB7 3
 #define DB6 2
@@ -98,6 +99,7 @@ void LCD_port_init()
 	//STEP 2: Set MODER of GPIOD Pins 7, 6, 3, 2, 1 & 0 as outputs
 	gpio_pin_set_mode(GPIOD, GPIO_MODER_MODE7_Pos, GPIO_MODER_MODER7_0);
 	gpio_pin_set_mode(GPIOD, GPIO_MODER_MODE6_Pos, GPIO_MODER_MODER6_0);
+    gpio_pin_set_mode(GPIOD, GPIO_MODER_MODE4_Pos, GPIO_MODER_MODER4_0);	
 	gpio_pin_set_mode(GPIOD, GPIO_MODER_MODE3_Pos, GPIO_MODER_MODER3_0);
 	gpio_pin_set_mode(GPIOD, GPIO_MODER_MODE2_Pos, GPIO_MODER_MODER2_0);
 	gpio_pin_set_mode(GPIOD, GPIO_MODER_MODE1_Pos, GPIO_MODER_MODER1_0);
@@ -106,12 +108,14 @@ void LCD_port_init()
 	//STEP 3: Set OTYPER of GPIOD Pins 7, 6, 3, 2, 1 & 0 as push-pull
 	gpio_set_output_type(GPIOD, GPIO_OTYPER_OT7_Pos, 0x00);
 	gpio_set_output_type(GPIOD, GPIO_OTYPER_OT6_Pos, 0x00);
+    gpio_set_output_type(GPIOD, GPIO_OTYPER_OT4_Pos, 0x00);
 	gpio_set_output_type(GPIOD, GPIO_OTYPER_OT3_Pos, 0x00);
 	gpio_set_output_type(GPIOD, GPIO_OTYPER_OT2_Pos, 0x00);
 	gpio_set_output_type(GPIOD, GPIO_OTYPER_OT1_Pos, 0x00);
 	gpio_set_output_type(GPIOD, GPIO_OTYPER_OT0_Pos, 0x00);
 	
 	gpio_pin_clear(GPIOD, EN);
+    gpio_pin_clear(GPIOD, RW);
 	
 	//Done with LCD port Initialization
 }
