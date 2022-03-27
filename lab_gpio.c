@@ -125,7 +125,7 @@ void gpio_pin_set_level(GPIO_TypeDef *port, uint32_t pin, uint8_t level)
 {
 	if (level == 1)
 	{
-		port->ODR |= (level << pin);
+		port->ODR |= (uint32_t)(level << pin);
 	}
 	else
 	{
