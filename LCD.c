@@ -1,4 +1,5 @@
 /* Lab 4 - ENGR331
+* Authors: Alex Bourdage, Sophie Woessner
  * The goal of this lab is help you figure out
  * (on your own) how to interface to a peripheral
  * that you have never used before based on the
@@ -139,13 +140,13 @@ void LCD_init()
 
 	// STEP 3a-3d: Set 4-bit mode (takes a total of 4 steps)
 	LCD_putNibble(0x03);
-	delay(20);
+	delay(10);
 	LCD_putNibble(0x03);
-	delay(20);
+	delay(10);
 	LCD_putNibble(0x03);
-	delay(20);
+	delay(10);
 	LCD_putNibble(0x02);
-	delay(20);
+	delay(10);
 
 	// STEP 4: Set 2 line display -- treats 16 char as 2 lines
 	LCD_send_cmd(LCD_CMD_FUNCTION_SET | TWO_LINE);
@@ -207,6 +208,7 @@ void LCD_write_char(unsigned char data)
 {
 	LCD_putNibble(data >> 4);
 	LCD_putNibble(data & 0x0F);
+    delay(4);
 }
 
 void LCD_write_string(char *message, write_type_t write_type)
@@ -251,9 +253,11 @@ void LCD_write_string(char *message, write_type_t write_type)
 		// Shift ticker style
 		while (shift_count < max_shifts)
 		{
-			LCD_send_cmd(LCD_CMD_CURSOR_DISPLAY_SHIFT | SHIFT_OPERATION);	
-			shift_count++;
-			delay(TICKER_RATE_MS);
+            // Shift two times and delay twice as long for better readability
+			LCD_send_cmd(LCD_CMD_CURSOR_DISPLAY_SHIFT | SHIFT_OPERATION);
+            LCD_send_cmd(LCD_CMD_CURSOR_DISPLAY_SHIFT | SHIFT_OPERATION);            
+			shift_count += 2;
+			delay(TICKER_RATE_MS * 2);
 		}
 	}
 }
@@ -269,13 +273,10 @@ static void LCD_putNibble(uint8_t nibble)
 	gpio_pin_set_level(GPIOD, DB6, (bool)(nibble & (1 << 2)));
 	gpio_pin_set_level(GPIOD, DB5, (bool)(nibble & (1 << 1)));
 	gpio_pin_set_level(GPIOD, DB4, (bool)(nibble & (1 << 0)));
-	
-	delay(4);
+   
 
 	// Set EN = LOW
 	gpio_pin_clear(GPIOD, EN);
-	
-	delay(4);
 }
 
 

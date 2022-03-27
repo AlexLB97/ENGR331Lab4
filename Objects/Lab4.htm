@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Lab4.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Lab4.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6160001: Last Updated: Sat Mar 26 13:58:43 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6160001: Last Updated: Sun Mar 27 11:59:47 2022
 <BR><P>
 <H3>Maximum Stack Usage =        324 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -412,8 +412,8 @@ Global Symbols
 <P><STRONG><a name="[fc]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[92]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 280 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; main &rArr; handle_state_actions &rArr; handle_state_transition &rArr; LCD_write_string &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; delay
+<BR><BR>[Stack]<UL><LI>Max Depth = 276 + Unknown Stack Size
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; handle_state_actions &rArr; handle_state_transition &rArr; LCD_write_string &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; gpio_pin_set_level
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1148,7 +1148,7 @@ Global Symbols
 <P><STRONG><a name="[10a]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
 
 <P><STRONG><a name="[bc]"></a>LCD_clear_display</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, lcd.o(.text.LCD_clear_display))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = LCD_clear_display &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; delay
+<BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = LCD_clear_display &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; gpio_pin_set_level
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_send_cmd
 </UL>
@@ -1156,7 +1156,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[be]"></a>LCD_init</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, lcd.o(.text.LCD_init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = LCD_init &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; delay
+<BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = LCD_init &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; gpio_pin_set_level
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_send_cmd
@@ -1166,7 +1166,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[c2]"></a>LCD_port_init</STRONG> (Thumb, 196 bytes, Stack size 40 bytes, lcd.o(.text.LCD_port_init))
+<P><STRONG><a name="[c2]"></a>LCD_port_init</STRONG> (Thumb, 166 bytes, Stack size 40 bytes, lcd.o(.text.LCD_port_init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = LCD_port_init &rArr; gpio_set_output_type
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_set_output_type
@@ -1178,7 +1178,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[bd]"></a>LCD_send_cmd</STRONG> (Thumb, 66 bytes, Stack size 24 bytes, lcd.o(.text.LCD_send_cmd))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = LCD_send_cmd &rArr; LCD_putNibble &rArr; delay
+<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = LCD_send_cmd &rArr; LCD_putNibble &rArr; gpio_pin_set_level
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_putNibble
@@ -1190,17 +1190,18 @@ Global Symbols
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_clear_display
 </UL>
 
-<P><STRONG><a name="[c8]"></a>LCD_write_char</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, lcd.o(.text.LCD_write_char))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = LCD_write_char &rArr; LCD_putNibble &rArr; delay
+<P><STRONG><a name="[c8]"></a>LCD_write_char</STRONG> (Thumb, 40 bytes, Stack size 16 bytes, lcd.o(.text.LCD_write_char))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = LCD_write_char &rArr; LCD_putNibble &rArr; gpio_pin_set_level
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_putNibble
+<BR>[Calls]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
+<LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_putNibble
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_write_string
 </UL>
 
-<P><STRONG><a name="[c9]"></a>LCD_write_string</STRONG> (Thumb, 232 bytes, Stack size 88 bytes, lcd.o(.text.LCD_write_string))
-<BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
-<LI>Call Chain = LCD_write_string &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; delay
+<P><STRONG><a name="[c9]"></a>LCD_write_string</STRONG> (Thumb, 240 bytes, Stack size 88 bytes, lcd.o(.text.LCD_write_string))
+<BR><BR>[Stack]<UL><LI>Max Depth = 148 + Unknown Stack Size
+<LI>Call Chain = LCD_write_string &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; gpio_pin_set_level
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncpy
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
@@ -1220,9 +1221,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tim6_delay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_write_string
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_write_char
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_send_cmd
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_init
-<LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_putNibble
 </UL>
 
 <P><STRONG><a name="[c3]"></a>gpio_clock_enable</STRONG> (Thumb, 30 bytes, Stack size 4 bytes, lab_gpio.o(.text.gpio_clock_enable))
@@ -1280,8 +1281,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[93]"></a>main</STRONG> (Thumb, 258 bytes, Stack size 32 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 280 + Unknown Stack Size
-<LI>Call Chain = main &rArr; handle_state_actions &rArr; handle_state_transition &rArr; LCD_write_string &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; delay
+<BR><BR>[Stack]<UL><LI>Max Depth = 276 + Unknown Stack Size
+<LI>Call Chain = main &rArr; handle_state_actions &rArr; handle_state_transition &rArr; LCD_write_string &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; gpio_pin_set_level
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_transition
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_actions
@@ -1420,11 +1421,10 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[c1]"></a>LCD_putNibble</STRONG> (Thumb, 116 bytes, Stack size 24 bytes, lcd.o(.text.LCD_putNibble))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = LCD_putNibble &rArr; delay
+<P><STRONG><a name="[c1]"></a>LCD_putNibble</STRONG> (Thumb, 102 bytes, Stack size 24 bytes, lcd.o(.text.LCD_putNibble))
+<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = LCD_putNibble &rArr; gpio_pin_set_level
 </UL>
-<BR>[Calls]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_pin_set_level
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_pin_set_level
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_pin_set
 <LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_pin_clear
 </UL>
@@ -1443,8 +1443,8 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[ce]"></a>handle_state_actions</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, main.o(.text.handle_state_actions))
-<BR><BR>[Stack]<UL><LI>Max Depth = 248 + Unknown Stack Size
-<LI>Call Chain = handle_state_actions &rArr; handle_state_transition &rArr; LCD_write_string &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; delay
+<BR><BR>[Stack]<UL><LI>Max Depth = 244 + Unknown Stack Size
+<LI>Call Chain = handle_state_actions &rArr; handle_state_transition &rArr; LCD_write_string &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; gpio_pin_set_level
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_state_transition
 </UL>
@@ -1452,8 +1452,8 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[cf]"></a>handle_state_transition</STRONG> (Thumb, 200 bytes, Stack size 80 bytes, main.o(.text.handle_state_transition))
-<BR><BR>[Stack]<UL><LI>Max Depth = 232 + Unknown Stack Size
-<LI>Call Chain = handle_state_transition &rArr; LCD_write_string &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; delay
+<BR><BR>[Stack]<UL><LI>Max Depth = 228 + Unknown Stack Size
+<LI>Call Chain = handle_state_transition &rArr; LCD_write_string &rArr; LCD_send_cmd &rArr; LCD_putNibble &rArr; gpio_pin_set_level
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncpy
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sprintf
