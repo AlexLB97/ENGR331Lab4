@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Lab4.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Lab4.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6160001: Last Updated: Sun Mar 27 12:05:42 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6160001: Last Updated: Mon Mar 28 18:58:32 2022
 <BR><P>
 <H3>Maximum Stack Usage =        324 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1295,10 +1295,6 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[cd]"></a>tim6_delay</STRONG> (Thumb, 100 bytes, Stack size 0 bytes, lcd.o(.text.tim6_delay))
-<BR><BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
-</UL>
-
 <P><STRONG><a name="[d1]"></a>user_button_init</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, lab_gpio.o(.text.user_button_init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = user_button_init &rArr; gpio_set_pupdr
 </UL>
@@ -1431,6 +1427,10 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_write_char
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_send_cmd
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_init
+</UL>
+
+<P><STRONG><a name="[cd]"></a>tim6_delay</STRONG> (Thumb, 100 bytes, Stack size 0 bytes, lcd.o(.text.tim6_delay))
+<BR><BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
 </UL>
 
 <P><STRONG><a name="[cb]"></a>capitalize_vowels</STRONG> (Thumb, 70 bytes, Stack size 24 bytes, main.o(.text.capitalize_vowels))

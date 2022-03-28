@@ -30,14 +30,18 @@
 
 #define INIT_DELAY_MS 100
 #define TICKER_RATE_MS 400
+// The delay required between commands. Started at 20ms, but found that 10ms works and is more responsive.
+#define CMD_DELAY_MS 10
+#define DATA_DELAY_MS 4
 
 
 /*******************************
- * FUNCTION PROTOTYPES
+ * STATIC FUNCTION PROTOTYPES
  *******************************
  */
 
 static void LCD_putNibble(uint8_t nibble);
+static void tim6_delay(void);
 // END Functions
 
 
@@ -49,7 +53,7 @@ static void LCD_putNibble(uint8_t nibble);
  * we get delay of approximately 1ms
  *******************************
  */
-void tim6_delay(void){
+static void tim6_delay(void){
 	// enable APB1 bus clock
 	RCC->APB1ENR|=RCC_APB1ENR_TIM6EN;
 	//TIM6 prescaler set at default to 0 for now
@@ -140,13 +144,13 @@ void LCD_init()
 
 	// STEP 3a-3d: Set 4-bit mode (takes a total of 4 steps)
 	LCD_putNibble(0x03);
-	delay(10);
+	delay(CMD_DELAY_MS);
 	LCD_putNibble(0x03);
-	delay(10);
+	delay(CMD_DELAY_MS);
 	LCD_putNibble(0x03);
-	delay(10);
+	delay(CMD_DELAY_MS);
 	LCD_putNibble(0x02);
-	delay(10);
+	delay(CMD_DELAY_MS);
 
 	// STEP 4: Set 2 line display -- treats 16 char as 2 lines
 	LCD_send_cmd(LCD_CMD_FUNCTION_SET | TWO_LINE);
@@ -196,7 +200,7 @@ void LCD_clear_display(void)
 
 
 /*******************************
- * LCD_write()
+ * LCD_write_char()
  * Inputs: unsigned character data (8-bit)
  * Outputs: NONE
  * writes the character to LCD.
@@ -208,17 +212,31 @@ void LCD_write_char(unsigned char data)
 {
 	LCD_putNibble(data >> 4);
 	LCD_putNibble(data & 0x0F);
-    delay(4);
+    delay(DATA_DELAY_MS);
 }
 
+
+/*******************************
+ * LCD_write_string()
+ * Inputs: unsigned character data (8-bit) and display state while writing
+ * Outputs: NONE
+ * writes the string to LCD.
+ *
+ *******************************
+ */
 void LCD_write_string(char *message, write_type_t write_type)
 {
 	char string_buffer[LINE_WIDTH_CHARS + 1];
     int len = (int)strlen(message);
 	int i = 0;
 	
+	// Clear any contents and put cursor back at the beginning of top row
 	LCD_send_cmd(LCD_CMD_CLEAR_DISPLAY);
+
+	// Copy the message into the buffer
 	strncpy(string_buffer, message, LINE_WIDTH_CHARS);
+
+	// Make sure the buffer has a null terminator
 	string_buffer[LINE_WIDTH_CHARS] = '\0';
 
 	if (write_type == OFF_WHILE_WRITING)
@@ -227,6 +245,7 @@ void LCD_write_string(char *message, write_type_t write_type)
 		LCD_send_cmd(LCD_CMD_DISPLAY_ON_OFF);
 	}
 	
+	// Send the message to the LCD one character at a time
 	while (string_buffer[i] != '\0' && i <= LINE_WIDTH_CHARS)
 	{
 		LCD_write_char(string_buffer[i]);
@@ -292,9 +311,11 @@ void LCD_send_cmd(uint8_t cmd)
 	// Send lower four bits
 	LCD_putNibble(cmd & 0x0F);
 	
+	// Set RS back to high, which is the default state
 	gpio_pin_set(GPIOD, RS);
 	
-	delay(20);
+	// Allow time for command to be processed
+	delay(CMD_DELAY_MS);
 }
 
 

@@ -73,6 +73,8 @@ static void reverse_string(char str[])
     }
 }
 
+// Function that is called on each iteration of the main loop to handle any
+// animation or update events depending on application state.
 static void handle_state_actions(LCD_state_t state)
 {
     if (state == DISPLAY_DECIMAL_NUMBER)
@@ -86,6 +88,7 @@ static void handle_state_actions(LCD_state_t state)
 
 }
 
+// Function to handle the transitions between states, which each state representing a lab task.
 static void handle_state_transition(LCD_state_t state)
 {
     switch (state)
@@ -157,25 +160,34 @@ static void handle_state_transition(LCD_state_t state)
 
 int main(void) 
 {
-  int timer_ticks = 0;
-  int button_high_count = 0;
-  int button_clicked = 0;
-  LCD_state_t application_state = DISPLAY_OFF;
-  LCD_port_init();
-  LCD_init();
-  user_button_init();
-  LCD_clear_display();
+    // Initialize application-level variables
+    int timer_ticks = 0;
+    int button_high_count = 0;
+    int button_clicked = 0;
+    LCD_state_t application_state = DISPLAY_OFF;
+
+    // Initialize LCD and the user button
+    LCD_port_init();
+    LCD_init();
+    user_button_init();
+
+    // Make sure the display is clear at start up
+    LCD_clear_display();
 
 
     while(1)
     {
+        // Use timer ticks as primitive way to keep time
         timer_ticks++;
 
+        // Increment the count for the number displayed on a set interval
         if (timer_ticks % COUNT_INCREMENT_TICKS == 0)
         {
             count++;
             count_changed = 1;
         }
+        
+        // Debounce the user button and determine when it has been clicked
         if (gpio_pin_get_level(GPIOA, USER_BTN) == 1)
         {
 
@@ -190,6 +202,7 @@ int main(void)
             button_high_count = 0;
         }
 
+        // If the button was clicked, change states.
         if (button_clicked)
         {
             LCD_clear_display();
@@ -218,9 +231,12 @@ int main(void)
                     application_state = DISPLAY_OFF;
                     break;
             }
+
+            // Transition to the new state
             handle_state_transition(application_state);
             button_clicked = 0;
         }
+        // Handle any update actions for current state.
         handle_state_actions(application_state);
     }
 }

@@ -60,7 +60,6 @@ typedef enum {
  *******************************
  */
 // Delay Functions
-void tim6_delay(void);
 void delay(int ms);
 
 // LCD related functions
